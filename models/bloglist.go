@@ -11,6 +11,7 @@ type BlogList struct {
 	Introduction string
 	Category_id  int
 	Createtime   int
+	Tag_id       int
 }
 
 type BlogListRes struct {
@@ -19,26 +20,19 @@ type BlogListRes struct {
 	Data BlogList
 }
 
-
-
 func init() {
 	orm.RegisterModel(new(BlogList))
 }
 
-func (this *BlogList) GetBlogList() BlogListRes {
-	list := BlogList{Id: 1}
+func (this *BlogList) GetBlogList() BlogList {
 	o := orm.NewOrm()
-	err := o.Read(&list)
+	var list BlogList
+	//err := o.Read(&list)
+	err := o.QueryTable("blog_list").OrderBy("-id").One(&list)
 	fmt.Println(err)
 	if err == orm.ErrNoRows {
-		return BlogListRes{1, "id不能为空", BlogList{}}
-	} else if err == orm.ErrMissPK {
-		return BlogListRes{1, "id不能为空", BlogList{}}
+		return list
 	} else {
-		return BlogListRes{1, "id不能为空", BlogList{
-			list.Id,
-			list.Title,
-			list.Introduction,
-			list.Category_id, list.Createtime}}
+		return list
 	}
 }
