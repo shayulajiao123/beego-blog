@@ -1,17 +1,18 @@
 package models
 
 import (
-	"fmt"
 	"github.com/astaxie/beego/orm"
 )
 
 type BlogList struct {
-	Id           int
-	Title        string
-	Introduction string
-	Category_id  int
-	Createtime   int
-	Tag_id       int
+	Id                int
+	Title             string
+	Introduction      string
+	Category_id       int
+	Createtime        int
+	Tag_id            int
+	Content           string
+	//Createtime_string string
 }
 
 type BlogListRes struct {
@@ -24,15 +25,11 @@ func init() {
 	orm.RegisterModel(new(BlogList))
 }
 
-func (this *BlogList) GetBlogList() BlogList {
+//获取一条
+func (c *BlogList) GetBlogList(params map[string]interface{}) (int64, []*BlogList, error) {
 	o := orm.NewOrm()
-	var list BlogList
-	//err := o.Read(&list)
-	err := o.QueryTable("blog_list").OrderBy("-id").One(&list)
-	fmt.Println(err)
-	if err == orm.ErrNoRows {
-		return list
-	} else {
-		return list
-	}
+	var list []*BlogList
+	num, err := o.QueryTable("blog_list").Limit(params["limit"], params["offset"]).OrderBy("-id").All(&list)
+	return num, list, err
+
 }

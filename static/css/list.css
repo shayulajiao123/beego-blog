@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.list {}
+
+.list ul {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.list ul li {
+    border-bottom: 1px solid #f2f2f2;
+    padding: 30px 20px;
+    list-style: none;
+}
+
+.list ul li:last-child {
+    border-bottom: none;
+}
+
+.list ul li h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.list ul li>p {
+    font-size: 14px;
+    line-height: 32px;
+    margin: 30px 0;
+}
+
+.list ul li>div {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+}
+
+.list ul li>div p.right {
+    display: flex;
+    flex-direction: column;
+}
