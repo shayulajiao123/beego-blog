@@ -9,8 +9,7 @@ import (
 	//"time"
 )
 
-const title = "鲨鱼辣椒的博客"
-const timeFormat = "2006-01-01 15:03:09"
+
 
 var Category = [3]string{"a", "b", "c"}
 
@@ -20,7 +19,7 @@ type IndexController struct {
 
 //首页
 func (this *IndexController) Index() {
-	this.Data["title"] = title
+	this.Data["title"] = beego.AppConfig.String("title")
 	this.TplName = "front/index.html"
 }
 
@@ -51,7 +50,7 @@ func (this *IndexController) BlogList() {
 	if total != 0 && err == nil {
 		for _, v := range data {
 			t := make(map[string]interface{})
-			Createtime := time.Unix(int64(v.Createtime), 0).Format(timeFormat)
+			Createtime := time.Unix(int64(v.Createtime), 0).Format(beego.AppConfig.String("timeFormat"))
 			t["id"] = v.Id
 			t["Introduction"] = v.Introduction
 			t["Category_id"] = Category[v.Category_id]
@@ -64,6 +63,8 @@ func (this *IndexController) BlogList() {
 		}
 	}
 
-	this.Data["json"] = result
+	this.Data["json"] =  models.BlogListRes{Code:0,Msg:"成功",Data:result}
 	this.ServeJSON()
 }
+
+//文章详情
