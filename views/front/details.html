@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>{{.title}}</title>
+    <link rel="stylesheet" type="text/css" href="/static/youtong/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/youtong/css/base.css"/>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/css/list.css" media="all">
+    <link rel="stylesheet" href="/static/editormd/css/editormd.css"/>
+
+</head>
+<body class="home">
+<header class="normal">
+    <div class="wrapper nav">
+        <a href="index.html">
+            <img class="normal" src="static/youtong/img/logo.png" alt="">
+            <img class="active" src="static/youtong/img/logo_active.png" alt="">
+        </a>
+        <ul>
+            <li>
+                <h3><a href="index.html">首页</a></h3>
+            </li>
+            <li>
+                <h3><a class="has-child" href="teaching.html">网络教学</a></h3>
+            </li>
+            <li>
+                <h3><a href="about.html">关于</a></h3>
+            </li>
+
+        </ul>
+    </div>
+
+</header>
+
+<div class="details" id="test-editor">
+
+</div>
+
+<div class="all-content">
+    <footer>
+        <div class="wrapper mobilePadding">
+            <img src="static/youtong/img/goTop.png" alt="" class="goBack">
+            <div class="content">
+                <a href="index.html"><img src="static/youtong/img/logo.png" alt=""></a>
+                <div class="center">
+                    <p>
+                        <a href="index.html" target="_black">首页</a>
+                        <a href="about.html">关于</a>
+                        <a href="teaching.html">网络教学</a>
+                        <a class="mobile"
+                           href="https://youtong.mccode.cn/scratch/?token=32c6gGVTWEntOoBUDQ.bc30aa510d1e276fef883fa1dacae6de&amp;app_secret=0&amp;app_id=0&amp;app_agent_id=0&amp;unique_id=dcc4dc7b7e4640c8908fe372cf38e7b3"
+                           target="_self">Scratch 编辑器</a>
+                        <a class="mobile" href="http://101.36.179.54:8888/login" target="_blank">Python 编辑器</a>
+                        <a class="mobile" href="https://jq.qq.com/?_wv=1027&amp;k=5a3MpbM" target="_blank">预约免费试听课</a>
+                        <a href="course.html" target="_black">课程大纲</a>
+                        <a href="team.html">师资团队</a>
+                        <a href="news.html">新闻动态</a>
+                        <a href="contact.html">联系我们</a>
+                    </p>
+                    <p class="pc">隐私政策</p>
+                </div>
+                <div class="img-box">
+                    <p class="mobile">隐私政策</p>
+                    <img src="static/youtong/img/wechat_code.png" alt="">
+                </div>
+            </div>
+            <p>Copyright - 2019 All Rights Reserved</p>
+        </div>
+    </footer>
+</div>
+
+
+<script src="/static/youtong/js/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/youtong/js/jquery.flexslider-min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/youtong/js/base.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/layui/layui.js"></script>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<script src="/static/editormd/editormd.min.js"></script>
+<script src="/static/editormd/editormd.js"></script>
+<script src="/static/editormd/lib/marked.min.js"></script>
+<script src="/static/editormd/lib/prettify.min.js"></script>
+<script>
+    $(function () {
+        editormd.markdownToHTML("test-editor");
+    })
+    layui.use('carousel', function () {
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#test1',
+            width: '100%', //设置容器宽度
+            // arrow: 'always', //始终显示箭头
+            anim: 'default', //切换动画方式
+            height: "500px",
+            interval: 2000,
+        });
+    });
+
+    $.ajax({
+        url: "http://127.0.0.1:8080/index/getblog",    // 提交到controller的url路径
+        type: "post",    // 提交方式
+        data: {blog_id:{{.blog_id}}},  // data为String类型，必须为 Key/Value 格式。
+        dataType: "json",    // 服务器端返回的数据类型
+        success: function (data) {
+            if (data.Code == 0) {
+                var details = data.Data.Content
+                console.log(data.Data.Content)
+                $("#test-editor").append(details);
+            } else {
+                console.log(456)
+            }
+        },
+    });
+</script>
+</body>
+</html>

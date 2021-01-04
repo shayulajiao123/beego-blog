@@ -2,7 +2,6 @@ package backend
 
 import (
 	"blog/models"
-	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/microcosm-cc/bluemonday"
@@ -33,8 +32,8 @@ func (this *IndexControler) AddBlog() {
 	blog.Title = "test"
 	blog.Tag_id = 1
 	blog.Introduction ="asdf"
-	content,_:= json.Marshal(html)
-	blog.Content = string(content)
+	//content,_:= json.Marshal(html)
+	blog.Content = string(html)
 	blog.Createtime = time.Now().Unix()
 	num, err := blog.AddBlog()
 	fmt.Println(num)

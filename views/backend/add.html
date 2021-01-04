@@ -47,16 +47,10 @@
                 data: data.field,  // data为String类型，必须为 Key/Value 格式。
                 dataType: "json",    // 服务器端返回的数据类型
                 success: function (data) {
-
-                    // 请求成功后的回调函数，其中的参数data为controller返回的map,也就是说,@ResponseBody将返回的map转化为JSON格式的数据，然后通过data这个参数取JSON数据中的值
+                    console.log(data)
                     if (data["Code"] == 0) {
                         data = JSON.parse(data)
-                        console.log(data["Msg"])
-                        console.log("---")
-                        console.log(data[0])
-                        console.log("---")
-                        console.log(data.Msg)
-                        //跳转到系统首页
+
                         // for (var i = 0; i < data.length; i++) {
                         //     console.log(data[i])
                         // }
@@ -67,11 +61,7 @@
 
                         console.log(456)
                         data = JSON.parse(data)
-                        console.log(data["Msg"])
-                        console.log("---")
-                        console.log(data[0])
-                        console.log("---")
-                        console.log(data.Msg)
+
                     }
                 },
             });

@@ -9,82 +9,21 @@
 		<link rel="stylesheet" type="text/css" href="/static/youtong/css/base.css"/>
 		<link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
 		<link rel="stylesheet" href="/static/css/list.css" media="all">
-
-		<!--[if lt IE 9]>
-	      <script src="static/youtong/js/html5shiv.js"></script>
-	      <script src="static/youtong/js/respond.js"></script>
-	    <![endif]-->
+		
 	</head>
 	<body class="home">
-		<header class="normal">
-			<div class="wrapper nav">
-				<a href="index.html">
-					<img class="normal" src="static/youtong/img/logo.png" alt="">
-					<img class="active" src="static/youtong/img/logo_active.png" alt="">
-				</a>
-				<ul>
-					<li>
-						<h3><a href="index.html">首页</a></h3>
-					</li>
-					<li>
-						<h3><a class="has-child" href="teaching.html">网络教学</a></h3>
-					</li>
-					<li>
-						<h3><a href="about.html">关于</a></h3>
-					</li>
-					
-				</ul>
-			</div>
-			
-		</header>
-		<!-- 移动端logo -->
-		<a href="index.html" class="mobile header_m">
-			<img class="normal" src="static/youtong/img/logo.png" alt="">
-		</a>
-		<img src="static/youtong/img/menu.png" alt="" class="mobile menu-btn menu-open-btn">
-		<div class="layui-carousel" id="test1">
-			<div carousel-item>
-				<div><img src="/static/youtong/img/about_slide01.png"></div>
-				<div><img src="/static/youtong/img/course_slide01.png"></div>
-			</div>
+	<div class="layui-carousel" id="test1">
+		<div carousel-item>
+			<img class="normal" src="/static/youtong/img/course_slide01.png" alt="">
+			<img class="active" src="/static/youtong/img/about_slide01.png" alt="">
 		</div>
-		<div class="list">
-			<ul>
-				<li>
-					<h3>这是标题 </h3>
-					<p>这是描述这是描述这是描述这是描述这是描述这是描述</p>
-					<div>
-						<p class="left">5个月前</p>
-						<p class="right">
-							<span>HTTP网站</span>
-							<span>继续阅读</span>
-						</p>
-					</div>
-				</li>
-				<li>
-					<h3>这是标题 </h3>
-					<p>这是描述这是描述这是描述这是描述这是描述这是描述</p>
-					<div>
-						<p class="left">5个月前</p>
-						<p class="right">
-							<span>HTTP网站</span>
-							<span>继续阅读</span>
-						</p>
-					</div>
-				</li>
-				<li>
-					<h3>这是标题 </h3>
-					<p>这是描述这是描述这是描述这是描述这是描述这是描述</p>
-					<div>
-						<p class="left">5个月前</p>
-						<p class="right">
-							<span>HTTP网站</span>
-							<span>继续阅读</span>
-						</p>
-					</div>
-				</li>
-			</ul>
+	</div>
+
+		<div class="container">
+			<div class="list"></div>
+			<div class="inner" id="test1"></div>
 		</div>
+
 
 		<div class="all-content">
 			<footer>
@@ -122,6 +61,7 @@
 		<script src="/static/youtong/js/jquery.flexslider-min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/static/youtong/js/base.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/static/layui/layui.js"></script>
+		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 		<script>
 			layui.use('carousel', function(){
 				var carousel = layui.carousel;
@@ -135,16 +75,41 @@
 					interval:2000,
 				});
 			});
+			layui.use('laypage', function(){
+				var laypage = layui.laypage;
 
+				//执行一个laypage实例
+				laypage.render({
+					elem: 'test1' //注意，这里的 test1 是 ID，不用加 # 号
+					,count: 50 //数据总数，从服务端得到
+				});
+			});
 			$.ajax({
 				url: "http://127.0.0.1:8080/index/bloglist",    // 提交到controller的url路径
 				type: "post",    // 提交方式
 				data: "",  // data为String类型，必须为 Key/Value 格式。
 				dataType: "json",    // 服务器端返回的数据类型
-				success: function (data) {    // 请求成功后的回调函数，其中的参数data为controller返回的map,也就是说,@ResponseBody将返回的map转化为JSON格式的数据，然后通过data这个参数取JSON数据中的值
-					if (data.message == "success") {
-						//跳转到系统首页
-						console.log(data)
+				success: function (data) {
+					if (data.Code == 0) {
+
+						var list = "<ul>";
+						for (var i = 0; i < data.Data.length; i++) {
+							a = data.Data[i]
+							list += "<li>";
+							list += "<h3>"+ a.Title +"</h3>";
+							list += "<p>"+a.Introduction+"</p>";
+							list += "<div>";
+							list += "<p class='left'>"+a.Createtime+"</p>";
+							list += "<p class='right'>";
+							list += "<span>"+a.Tag_id+"</span>";
+							list += "<span  onclick=\"javascript:window.open('/index/details?blog_id="+a.id+"')\" >更多详情</span>";
+							list += "</p>";
+							list += "</div>";
+							list += "</li>";
+						}
+						list += "</ul>";
+						$(".list").append(list);
+						console.log(data.Msg)
 					} else {
 						console.log(456)
 					}
